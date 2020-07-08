@@ -24,3 +24,28 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+project.ext.myProp="myValue"
+ext {
+    firstName = "first name"
+}
+
+assert myProp == 'myValue'
+ext.firstName = "second name"
+
+// test prop in gradle.properties
+assert exampleProp == 'myValue'
+
+task printGradleProp {
+    doLast {
+        println "Second property: $someOtherProp"
+    }
+}
+
+version = "1.0.0-SNAPSHOT"
+
+task printGradleVersion() {
+    doFirst {
+        println("project version:$version")
+    }
+}
