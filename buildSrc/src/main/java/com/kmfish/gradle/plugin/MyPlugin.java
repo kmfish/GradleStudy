@@ -1,5 +1,7 @@
 package com.kmfish.gradle.plugin;
 
+import com.android.build.gradle.AppExtension;
+
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
@@ -12,6 +14,8 @@ public class MyPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
-        System.out.println("123456");
+        System.out.println("MyPlugin apply");
+        MyTransform transform = new MyTransform(project);
+        project.getExtensions().findByType(AppExtension.class).registerTransform(transform);
     }
 }

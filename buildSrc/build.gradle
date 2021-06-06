@@ -2,6 +2,20 @@
 apply plugin: 'java-library'
 //use groovy library
 //apply plugin: 'groovy'
+
+
+repositories {
+    maven { url 'http://repo.yypm.com:8181/nexus/content/groups/public' }
+    google()
+}
+
+dependencies {
+    implementation gradleApi()//gradle sdk
+    implementation localGroovy()//groovy sdk
+    implementation "com.android.tools.build:gradle:4.1.1"
+    implementation 'org.javassist:javassist:3.27.0-GA'
+}
+
 sourceSets {
     main{
 //      groovy{
@@ -19,3 +33,4 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
+
