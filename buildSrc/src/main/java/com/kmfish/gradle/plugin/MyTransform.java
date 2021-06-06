@@ -10,6 +10,7 @@ import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.utils.FileUtils;
+import com.google.common.collect.ImmutableSet;
 
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
@@ -46,13 +47,18 @@ class MyTransform extends Transform {
 
     @Override
     public Set<? super QualifiedContent.Scope> getScopes() {
-        return TransformManager.SCOPE_FULL_PROJECT;
+        return ImmutableSet.of();
     }
 
 //    @Override
-//    public Set<? super QualifiedContent.Scope> getReferencedScopes() {
+//    public Set<? super QualifiedContent.Scope> getScopes() {
 //        return TransformManager.SCOPE_FULL_PROJECT;
 //    }
+
+    @Override
+    public Set<? super QualifiedContent.Scope> getReferencedScopes() {
+        return TransformManager.SCOPE_FULL_PROJECT;
+    }
 
     @Override
     public boolean isIncremental() {
@@ -62,24 +68,35 @@ class MyTransform extends Transform {
     @Override
     public void transform(TransformInvocation invocation) throws TransformException, InterruptedException, IOException {
         logger.quiet("Begin {}, incremental = {}", getName(), invocation.isIncremental());
-        Collection<TransformInput> inputs = invocation.getInputs();
-        for (TransformInput in: inputs) {
-            Collection<DirectoryInput> dIns = in.getDirectoryInputs();
-            for (DirectoryInput dIn: dIns) {
-                File inputDir = dIn.getFile();
-                File outputDir = invocation.getOutputProvider().getContentLocation(
-                        dIn.getName(), dIn.getContentTypes(), dIn.getScopes(), Format.DIRECTORY);
-
-                logger.info("DirectoryInput:" + dIn.toString());
-                logger.info("DirectoryInput outputDir:" + outputDir.toString());
-                FileUtils.copyDirectory(inputDir, outputDir);
-            }
-            Collection<JarInput> jarInputs = in.getJarInputs();
-            for (JarInput jarInput: jarInputs) {
-                logger.info("JarInput:" + jarInput.toString());
-            }
-
-            logger.info("TransformInput:" + in.toString());
+        Collection<TransformInput> referencedInputs = invocation.getReferencedInputs();
+        logger.quiet("referencedInputs {}", referencedInputs);
+        for (TransformInput in: referencedInputs) {
+            dumpInput(in, invocation);
         }
+
+        Collection<TransformInput> inputs = invocation.getInputs();
+        logger.quiet("inputs {}", inputs);
+        for (TransformInput in: inputs) {
+            dumpInput(in, invocation);
+        }
+    }
+
+    private void dumpInput(TransformInput in, TransformInvocation invocation) {
+        Collection<DirectoryInput> dIns = in.getDirectoryInputs();
+        for (DirectoryInput dIn: dIns) {
+            File inputDir = dIn.getFile();
+//            File outputDir = invocation.getOutputProvider().getContentLocation(
+//                    dIn.getName(), dIn.getContentTypes(), dIn.getScopes(), Format.DIRECTORY);
+
+            logger.info("DirectoryInput:" + inputDir.toString());
+//            logger.info("DirectoryInput outputDir:" + outputDir.toString());
+//                FileUtils.copyDirectory(inputDir, outputDir);
+        }
+        Collection<JarInput> jarInputs = in.getJarInputs();
+        for (JarInput jarInput: jarInputs) {
+            logger.info("JarInput:" + jarInput.toString());
+        }
+
+        logger.info("TransformInput:" + in.toString());
     }
 }
