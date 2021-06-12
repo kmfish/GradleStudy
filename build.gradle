@@ -49,3 +49,16 @@ task printGradleVersion() {
         println("project version:$version")
     }
 }
+
+task hello {
+    doFirst {
+        println '*** task hello doFirst'
+    }
+    doLast {
+        println '*** task hello doLast'
+    }
+    println '*** config task hello'
+}
+
+apply from: 'lifecycle.gradle'
+apply from: 'taskgraphlisten.gradle'

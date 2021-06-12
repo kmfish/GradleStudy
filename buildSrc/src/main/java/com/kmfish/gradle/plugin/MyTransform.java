@@ -1,7 +1,6 @@
 package com.kmfish.gradle.plugin;
 
 import com.android.build.api.transform.DirectoryInput;
-import com.android.build.api.transform.Format;
 import com.android.build.api.transform.JarInput;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.Transform;
@@ -9,7 +8,6 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.gradle.internal.pipeline.TransformManager;
-import com.android.utils.FileUtils;
 import com.google.common.collect.ImmutableSet;
 
 import org.gradle.api.Project;

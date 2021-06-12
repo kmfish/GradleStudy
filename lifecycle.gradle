@@ -1,0 +1,59 @@
+// 演示了生命周期的监听方法
+// 参考：https://www.heqiangfly.com/2016/03/18/development-tool-gradle-lifecycle/
+
+project.subprojects { sub ->
+    //在 project 开始配置前调用，当前的 project 作为参数传递给闭包。
+    // 这个方法很容易误用，你要是直接当前子模块的 build.gradle 中使用是肯定不会调用到的，
+    // 因为Project都没配置好所以也就没它什么事情，这个代码块的添加只能放在父工程的 build.gradle 中,如此才可以调用的到。
+    sub.beforeEvaluate { pro ->
+        println "#### beforeEvaluate of " + pro.path
+    }
+    //只要 project 配置成功均会调用，不论是在父模块还是子模块
+    sub.afterEvaluate { pro ->
+        println("#### Evaluate after of " + pro.path)
+    }
+}
+
+project.afterEvaluate { pro ->
+    println("#### Evaluate after of " + pro.path)
+}
+
+// 设置一个 project 配置前执行的闭包
+// 子模块的该方法声明在 root project 中回调才会执行，root project 的该方法声明在 settings.gradle 中才会执行。
+gradle.beforeProject { project ->
+    println "#### before project " + project
+}
+
+// 设置一个 project 配置完毕后立即执行的闭包或者回调方法。
+// afterProject 在配置参数失败后会传入两个参数，前者是当前 project，后者显示失败信息。
+gradle.afterProject { project, projectState ->
+    if (projectState.failure) {
+        println "Evaluation afterProject of " + project + " FAILED"
+    } else {
+        println "Evaluation afterProject of " + project + " succeeded"
+    }
+}
+
+// 构建结束时的回调，此时所有的任务都已经执行，一个构建结果的对象 BuildResult 作为参数传递给闭包
+gradle.buildFinished { r ->
+    println("buildFinished "+r.failure)
+}
+
+//所有的 project 都配置完成后的回调，此时，所有的project都已经配置完毕，准备开始生成 task 图。gradle 对象会作为参数传递给闭包。
+gradle.projectsEvaluated {gradle ->
+    println("projectsEvaluated")
+}
+
+/**
+ * 因此，生命周期回调的执行顺序是：
+ * gradle.settingsEvaluated->
+ * gradle.projectsLoaded->
+ * gradle.beforeProject->
+ * project.beforeEvaluate->
+ * gradle.afterProject->
+ * project.afterEvaluate->
+ * gradle.projectsEvaluated->
+ * gradle.taskGraph.graphPopulated->
+ * gradle.taskGraph.whenReady->
+ * gradle.buildFinished
+ */

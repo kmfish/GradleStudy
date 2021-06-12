@@ -18,4 +18,5 @@ public class MyPlugin implements Plugin<Project> {
         MyTransform transform = new MyTransform(project);
         project.getExtensions().findByType(AppExtension.class).registerTransform(transform);
     }
+
 }

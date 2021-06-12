@@ -1,0 +1,36 @@
+// Task 执行图（TaskExecutionGraph）
+//在配置时，Gradle 决定了在执行阶段要运行的 task 的顺序，他们的依赖关系的内部结构被建模为一个有向无环图，
+// 我们可以称之为 taks 执行图，它可以用 TaskExecutionGraph 来表示。可以通过 gradle.taskGraph 来获取。
+//在 TaskExecutionGraph 中也可以设置一些 Task 生命周期的回调：
+
+//添加 task 执行图的监听器，当执行图配置好会执行通知。
+gradle.taskGraph.addTaskExecutionGraphListener(new TaskExecutionGraphListener() {
+    @Override
+    void graphPopulated(TaskExecutionGraph graph) {
+        println("@@@ gradle.taskGraph.graphPopulated ")
+    }
+})
+
+//添加 task 执行监听器，当 task 执行前或者执行完毕会执行回调发出通知。
+gradle.taskGraph.addTaskExecutionListener(new TaskExecutionListener() {
+    @Override
+    void beforeExecute(Task task) {
+        println("@@@ gradle.taskGraph.beforeTask "+task)
+    }
+    @Override
+    void afterExecute(Task task, TaskState state) {
+        println("@@@ gradle.taskGraph.afterTask "+task)
+    }
+})
+
+gradle.taskGraph.afterTask { task ->
+    println("### gradle.taskGraph.afterTask "+task)
+}
+
+gradle.taskGraph.beforeTask { task ->
+    println("### gradle.taskGraph.beforeTask "+task)
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    println("@@@ gradle.taskGraph.whenReady ")
+}

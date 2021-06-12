@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.kmfish.gradle.plugin.copy'
 apply plugin: 'com.kmfish.gradle.plugin'
-//apply plugin: 'com.kmfish.gradle.plugin.copy'
 
 android {
     compileSdkVersion 30
@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    implementation project(":library1")
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.1.0'
@@ -37,10 +38,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-//import com.kmfish.gradle.plugin.MyTask
-//task hello(type: MyTask) {
-//    println("hello config")
-//    doLast {
-//        println("hello")
-//    }
-//}
+import com.kmfish.gradle.plugin.MyTask
+task hello2(type: MyTask) {
+    println("hello2 config")
+    doLast {
+        println("hello2 doLast")
+    }
+}

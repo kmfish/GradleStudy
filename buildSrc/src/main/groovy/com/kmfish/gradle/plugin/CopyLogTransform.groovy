@@ -60,7 +60,7 @@ class CopyLogTransform extends Transform {
                             break;
                     }
                 } else {
-                    project.logger.error "no incremental: ${it}  dest: ${dest}"
+                    project.logger.quiet "no incremental: ${it}  dest: ${dest}"
                     FileUtils.copyFile(it.file, dest)
                 }
             }
@@ -90,8 +90,10 @@ class CopyLogTransform extends Transform {
                         }
                     }
                 } else {
-                    project.logger.error "no incremental: ${it} dest: ${outputDir}"
-                    FileUtils.delete(outputDir)
+                    project.logger.quiet "no incremental: ${it} dest: ${outputDir}"
+                    if (outputDir.exists()) {
+                        FileUtils.deleteDirectoryContents(outputDir)
+                    }
                     FileUtils.copyDirectory(inputDir, outputDir)
                 }
             }
