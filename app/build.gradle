@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.kmfish.gradle.plugin.copy'
 apply plugin: 'com.kmfish.gradle.plugin'
+apply plugin: 'com.kmfish.gradle.plugin.buildtracker'
 
 android {
     compileSdkVersion 30
@@ -36,6 +37,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+// buildtracker plugin 注册的Extension，可以配置它的行为
+taskExecTime {
+    threshold 100
+    sorted true
 }
 
 
