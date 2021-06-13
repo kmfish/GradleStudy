@@ -65,7 +65,7 @@ class BuildTrackerPlugin implements Plugin<Project> {
 
             tasksBuildTime.each {
                 if (it.value > timeCostExt.threshold) {
-                    println("$aLong ms      $s")
+                    println("$it.value ms      $it.key")
                 }
                 totalCost += it.value
             }

@@ -27,6 +27,11 @@ android {
     }
 }
 
+// 自定义依赖配置
+configurations {
+    customimplementation.extendsFrom implementation
+}
+
 dependencies {
     implementation project(":library1")
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -37,6 +42,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    customimplementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
 }
 
 // buildtracker plugin 注册的Extension，可以配置它的行为
