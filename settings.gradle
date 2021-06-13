@@ -2,6 +2,8 @@ rootProject.name = "GradleStudy"
 include ':app'
 include ':library1'
 
+//apply from: 'taskgraphlisten.gradle'
+
 //当 setting 中的所有project 都创建好时执行闭包回调。gradle 对象会作为参数传递给闭包。
 //这个方法也比较特殊，只有声明在适当的位置上才会发生，如果将这个声明周期挂接闭包声明在 build.gradle 文件中，那么将不会发生这个事件，因为项目创建发生在初始化阶段。
 //放在 settings.gradle 中是可以执行的。

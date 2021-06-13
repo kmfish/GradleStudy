@@ -38,10 +38,21 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-import com.kmfish.gradle.plugin.MyTask
-task hello2(type: MyTask) {
-    println("hello2 config")
-    doLast {
-        println("hello2 doLast")
+
+task helloCopy2 (type: Copy){
+    from 'src/main/AndroidManifest.xml'  // 调用 from 方法
+    into 'build/test'  // 调用 into 方法
+    // 调用 rename 方法
+    rename {String fileName ->
+        fileName = "AndroidManifestCopy.xml"
+    }
+}
+
+// 声明任务的 输入和输出
+task inoutTask {
+    inputs.file ("src/main/AndroidManifest.xml")
+    outputs.file ("build/test/AndroidManifestCopy.xml")
+    doFirst {
+        println 'task inoutTask doFirst'
     }
 }

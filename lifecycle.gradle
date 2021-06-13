@@ -1,5 +1,7 @@
-// 演示了生命周期的监听方法
-// 参考：https://www.heqiangfly.com/2016/03/18/development-tool-gradle-lifecycle/
+/**
+ * 演示了生命周期的监听方法
+ * 参考：https://www.heqiangfly.com/2016/03/18/development-tool-gradle-lifecycle/
+ */
 
 project.subprojects { sub ->
     //在 project 开始配置前调用，当前的 project 作为参数传递给闭包。
